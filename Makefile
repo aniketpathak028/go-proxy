@@ -3,10 +3,11 @@ GO=go
 BUILD_DIR=build
 PKG_LIST=$(shell go list ./... 2>/dev/null)
 LOG_FILE=/tmp/$(BINARY_NAME)-build.log
-
+CONTAINER_IMAGE=proxy-go
+CONTAINER_TAG=latest
 .DEFAULT_GOAL := help
 
-.PHONY: build clean run test help deps tidy
+.PHONY: build clean run test help deps tidy podman-build podman-run podman-clean
 
 deps: ## Download dependencies
 	@echo "Downloading dependencies..."
@@ -44,3 +45,17 @@ vet: ## Run go vet
 
 help: ## Display available commands
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+podman-build: ## Build container image using Podman
+	@echo "Building container image..."
+	@podman build -t $(CONTAINER_IMAGE):$(CONTAINER_TAG) .
+	@echo "✓ Container image built"
+
+podman-run: podman-build ## Run container using Podman
+	@echo "Starting container..."
+	@podman run --rm -p 8080:8080 $(CONTAINER_IMAGE):$(CONTAINER_TAG)
+
+podman-clean: ## Remove container image
+	@echo "Removing container image..."
+	@podman rmi $(CONTAINER_IMAGE):$(CONTAINER_TAG) 2>/dev/null || true
+	@echo "✓ Container image removed"
