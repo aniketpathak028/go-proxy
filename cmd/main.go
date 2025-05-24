@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/aniketpathak028/proxy-go/cmd/proxy"
+	proxy "github.com/aniketpathak028/proxy-go/pkg/server"
 )
 
 func main() {

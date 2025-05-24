@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download
-RUN go build -o proxy-go main.go
+RUN go build -o proxy-go ./cmd/main.go
 
 FROM docker.io/library/alpine:latest
 
