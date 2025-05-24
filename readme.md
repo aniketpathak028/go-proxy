@@ -40,7 +40,7 @@ proxy-go/
 └── Makefile
 ```
 
-## Available Make Commands
+## Make Commands
 
 - `make podman-build` - Build container image
 - `make podman-run` - Run proxy server in container
@@ -67,3 +67,9 @@ make podman-run PORT=3000
 
 ![alt text](client.png)
 ![alt text](proxy.png)
+
+## Future Scope
+
+- Add HTTPS support
+- Implement persistent caching
+- LRU cache eviction policy
